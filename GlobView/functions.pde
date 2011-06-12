@@ -21,7 +21,7 @@ void keyPressed() {
     dump.dumpBlocks(false);
   }
   else if(keyCode== DELETE) {
-    smoothAll(5.0,15.0);
+    smoothAll(smoothing,radius);
   }
 
   cut = constrain(cut,0,160);

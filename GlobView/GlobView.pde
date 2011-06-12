@@ -5,6 +5,9 @@ import processing.pdf.*;
 //////////////////// global scope
 
 
+float smoothing = 10.0;
+float radius = 16.0;
+
 ArrayList blocks;
 int globId = 0;
 int numBlocks = 48;
