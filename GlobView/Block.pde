@@ -31,10 +31,10 @@ class Block {
       float X = parseFloat(coor[0])/scale;
       float Y = parseFloat(coor[1])/scale;
       float Z = parseFloat(coor[2])/scale;
-      float V = parseFloat(vals[0])/scale;
+      //float V = parseFloat(vals[0])/scale;
       float SUM = parseFloat(vals[1]);
 
-      nodes.add(new Node(globId,X,Y,Z,V,SUM));
+      nodes.add(new Node(globId,X,Y,Z,SUM));
 
       //mini = min(mini,SUM);
       //maxi = max(maxi,SUM);

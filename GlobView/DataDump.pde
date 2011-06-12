@@ -8,33 +8,10 @@ class DataDump {
     filename = _filename;
   }
 
-  void dumpVals() {
-    ArrayList data = new ArrayList(0);
-
-    for(int q = 0 ; q < blocks.size() ; q++) {
-      Block tmp = (Block)blocks.get(q);
-      for (int i = 0 ;i < tmp.nodes.size();i++) {
-        Node n = (Node)tmp.nodes.get(i);
-        String tmpCoord = n.x+":"+n.y+":"+n.z;
-        String tmpVal = " "+n.val+";";
-        data.add(tmpCoord);
-        data.add(tmpVal);
-      }
-    }
-
-    String dump[] = new String[data.size()];
-    for (int i = 0 ;i< dump.length;i++) {
-      dump[i] = (String)data.get(i)+"";
-    }
-
-    saveStrings(filename, dump);
-
-    //if (debug)
-    //println("data ulozena do souboru: "+filename);
-  }
 
   void dumpBlocks(boolean time) {
 
+    getMiniMaxi();
 
     String D = nf(day(),2)+"";
     String M = nf(month(),2)+"";
@@ -96,7 +73,7 @@ class DataDump {
         //coordinte hack
         raw.add(tmpnode.x*scale+":"+tmpnode.y*scale+":"+tmpnode.z*scale);
 
-        raw.add(" "+map(tmpnode.sum,mini,maxi,0,1600)+";"+tmpnode.sum+";");
+        raw.add(" "+map(tmpnode.sum,mini,maxi,0,1600)+";"+tmpnode.origSum+";");
       }
 
       String [] arr = new String[raw.size()]; 

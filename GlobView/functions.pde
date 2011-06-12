@@ -104,4 +104,12 @@ void smoothAll(float kolik,float perimeter) {
       }
     }
   }
+
+  getMiniMaxi();
+
+  for(int i = 0;i<blocks.size();i++) {
+    Block b = (Block)blocks.get(i);
+    b.remap();
+  }
 }
+
