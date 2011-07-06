@@ -30,7 +30,7 @@ DataDump dump;
 //////////////////// setup
 
 void setup() {
-  size(1024,768,OPENGL);
+  size(1024,768,P3D);
 
 
   textFont(createFont("Verdana",12));
@@ -81,7 +81,7 @@ void setup() {
 
 void draw() {
   
-  cam.rotateY(0.01);
+  //cam.rotateY(0.01);
 
   if(capturing) {
     beginRaw(PDF,"map.pdf");
