@@ -11,7 +11,7 @@ class DataDump {
 
   void dumpBlocks(boolean time) {
 
-    getMiniMaxi();
+    getMiniMaxi(blocks);
 
     String D = nf(day(),2)+"";
     String M = nf(month(),2)+"";
