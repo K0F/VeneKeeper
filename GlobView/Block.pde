@@ -64,7 +64,7 @@ class Block {
   void remap() {
     for(int i = 0 ;i<nodes.size();i++) {
       Node n = (Node)nodes.get(i);
-      n.sum = map(n.sum,mini,maxi,0,160);
+      n.sum2 = n.sum = map(n.sum,mini,maxi,0,160);
     }
   }
 
@@ -72,7 +72,7 @@ class Block {
     for(int i =0 ;i<nodes.size();i++) {
       Node n = (Node)nodes.get(i);
       if(n.zmetek) {
-        n.sum = lerp(n.sum,hladina,0.95);
+        n.sum2 = n.sum = lerp(n.sum,hladina,0.95);
       }
     }
   }

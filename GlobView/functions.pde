@@ -21,7 +21,7 @@ void keyPressed() {
     dump.dumpBlocks(false);
   }
   else if(keyCode== DELETE) {
-    smoothAll(smoothing,radius);
+    //smoothAll(smoothing,radius);
   }
 
   cut = constrain(cut,0,160);
@@ -29,12 +29,12 @@ void keyPressed() {
 
 //////////////////// getMiniMaxi
 
-void getMiniMaxi() {
+void getMiniMaxi(ArrayList _blocks) {
   mini = 1000000;
   maxi = 0;
 
-  for(int i = 0; i< blocks.size();i++) {
-    Block b =  (Block)blocks.get(i);
+  for(int i = 0; i< _blocks.size();i++) {
+    Block b =  (Block)_blocks.get(i);
 
     for(int ii = 0 ; ii < b.nodes.size();ii++) {
       Node n = (Node)b.nodes.get(ii);
@@ -69,13 +69,13 @@ void analyze() {
 
 //////////////////// smoothAll
 
-void smoothAll(float kolik,float perimeter) {
+void smoothAll(ArrayList _blocks,float kolik,float perimeter) {
 
   ArrayList temp = new ArrayList(0);
 
   for(int Y = 0;Y<6;Y+=1) {
-    for(int i = 0;i<blocks.size();i+=6) {
-      Block b = (Block)blocks.get(i+Y);
+    for(int i = 0;i<_blocks.size();i+=6) {
+      Block b = (Block)_blocks.get(i+Y);
 
       for(int ii = 0 ;ii<b.nodes.size();ii++) {
         Node n = (Node)b.nodes.get(ii);
@@ -99,16 +99,16 @@ void smoothAll(float kolik,float perimeter) {
         float dis = dist(cur.x,cur.y,tmp.x,tmp.y);
 
         if(dis < perimeter) {
-          cur.sum += (tmp.sum-cur.sum)/(dis*kolik);
+          cur.sum += (tmp.sum2-cur.sum)/(dis*kolik);
         }
       }
     }
   }
 
-  getMiniMaxi();
+  getMiniMaxi(_blocks);
 
-  for(int i = 0;i<blocks.size();i++) {
-    Block b = (Block)blocks.get(i);
+  for(int i = 0;i<_blocks.size();i++) {
+    Block b = (Block)_blocks.get(i);
     b.remap();
   }
 }

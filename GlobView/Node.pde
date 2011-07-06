@@ -7,7 +7,7 @@ class Node {
   float origSum;
   boolean zmetek = false;
 
-  float sum;
+  float sum,sum2;
 
 
   Node(int _id,float _x,float _y,float _z,float _sum) {
@@ -15,7 +15,7 @@ class Node {
     x = _x;
     y = _y;
     z = _z;
-    origSum = sum = _sum;
+    sum2 = origSum = sum = _sum;
   }
 
 }
