@@ -9,20 +9,25 @@ PeasyCam cam;
 float minval = 1000000;
 float maxval = 0;
 
+float centerX,centerY;
+
 int blockNum = 48;
 
 
-float radius = 150.0;
+float radius = 340.0;
 
 boolean result = false;
 
 void setup(){
     size(1024,768,P3D);
 
+    centerX = 0;
+    centerY = 0;
+
     parser = new Parser(nodes);
 
 
-    cam = new PeasyCam(this, 1000);
+    cam = new PeasyCam(this, 10000);
 
     float [] rot = {
         -1.0961999, -0.8072881, 0.23353978
@@ -36,15 +41,22 @@ void draw(){
     background(0);
 
 
+    pushMatrix();
+
+    translate(-centerX,-centerY,0);
 
     stroke(0);
+
+    getMinMax();
 
     for(int i = 0 ; i < nodes.size();i++){
         Node n = (Node)nodes.get(i);
         n.draw();
-        n.approx(10);
+        n.approx(100);
 
     }
+
+    popMatrix();
 }
 
 void keyPressed(){
@@ -76,6 +88,10 @@ class Parser{
                 String coords[] = splitTokens(tmp[ln-1],":");
                 String vals[] = splitTokens(tmp[ln],"; ");
 
+
+                centerX+= parseFloat(coords[0]);
+                centerY+= parseFloat(coords[1]);
+
                 PVector pos = new PVector(parseFloat(coords[0]),parseFloat(coords[1]),parseFloat(coords[2]));
                 float val1 = parseFloat(vals[0]);
                 float val2 = parseFloat(vals[1]);
@@ -85,6 +101,9 @@ class Parser{
             }
 
         }
+
+        centerX /= (cnt+0.0);
+        centerY /= (cnt+0.0);
     }
 }
 
@@ -100,7 +119,7 @@ class Node{
         id = _id;
         blockId = _blockId;
         pos = _pos;
-        sval = val1 = _val1;
+        sval = val1 = _val1;//+1600*(noise(_pos.x/3000.0,_pos.y/3000.0)*noise(_pos.x/229.0,_pos.y/229.0));// _val1;
         nval = 0;
         val2 = _val2;
     }
@@ -108,20 +127,22 @@ class Node{
     void draw(){
 
 
-        /*    stroke(255,100);
-              line(pos.x,pos.y,val1-2+pos.z,pos.x,pos.y,val1+2+pos.z);
-              stroke(#ffcc00,100);
-              line(pos.x,pos.y,sval-2+pos.z,pos.x,pos.y,sval+2+pos.z);
-         */  stroke(#FF0000,100);
+        stroke(255,100);
+        line(pos.x,pos.y,val1-2+pos.z,pos.x,pos.y,val1+2+pos.z);
+        stroke(#ffcc00,100);
+        line(pos.x,pos.y,sval-2+pos.z,pos.x,pos.y,sval+2+pos.z);
+        stroke(#FF0000,100);
         line(pos.x,pos.y,nval-2+pos.z,pos.x,pos.y,nval+2+pos.z);
 
     }
 
+
     void approx(int kolik){
 
 
+
         if(!result){
-            nval += ((val1-sval)*40.0-nval)/3000.0;
+            nval += ((val1-sval)*120.0-nval)/3000.0;
             for(int i = 0 ;i<kolik;i++){
                 int sel = (int)random(0,nodes.size());
                 Node other = (Node)nodes.get(sel);
@@ -129,7 +150,7 @@ class Node{
 
                 float d = dist(pos.x,pos.y,other.pos.x,other.pos.y);
                 if(d < radius){
-                    sval += (other.val1-sval)/3.0;//dist(pos.x,pos.y,other.pos.x,other.pos.y);
+                    sval += (other.val1-sval)/(d/10.0+1.0);//dist(pos.x,pos.y,other.pos.x,other.pos.y);
 
                 }
 
@@ -140,14 +161,32 @@ class Node{
             Node other = (Node)nodes.get(sel);
 
 
+
             float d = dist(pos.x,pos.y,other.pos.x,other.pos.y);
             if(d < radius){
-                nval += (other.nval-nval)/3.0;//dist(pos.x,pos.y,other.pos.x,other.pos.y);
+                nval += (lerp(map(other.nval,minval,maxval,0,1600),other.val1,map(pos.x,0,centerX*2,0,1))-nval)/(d/10.0+1.0);//dist(pos.x,pos.y,other.pos.x,other.pos.y);
 
             }
 
 
         }
     }
+}
+void getMinMax(){
+
+    minval = 100000;
+    maxval = -100000;
+
+
+    for(int i = 0 ;i<nodes.size();i++){
+
+        Node n = (Node)nodes.get(i);
+
+        maxval = max(maxval,n.nval);
+        minval = min(minval,n.nval);
+    }
+
 
 }
+
+
